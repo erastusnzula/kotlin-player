@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Music Player</string>
+    <string name="all_songs">All songs</string>
+    <string name="favourites">favourites</string>
+    <string name="playlist">playlist</string>
+    <string name="shuffle">shuffle</string>
+    <string name="settings">settings</string>
+    <string name="search_bar">Search</string>
+    <string name="song_end">00 : 00</string>
+    <string name="song_start">00 : 00</string>
+    <string name="current_image">current_image</string>
+    <string name="repeat_icon">repeat_icon</string>
+    <string name="previous_icon">previous_icon</string>
+    <string name="play_icon">play_icon</string>
+    <string name="next_icon">next_icon</string>
+    <string name="shuffle_icon">shuffle_icon</string>
+    <string name="current_song">Alan Walker - Alone Lyrics</string>
+    <string name="song_albulm"><![CDATA[<unknown>]]></string>
+    <string name="timer">timer</string>
+    <string name="equalizer">equalizer</string>
+    <string name="share">share</string>
+    <string name="active_album">activeAlbum</string>
+    <string name="song_album_name"><![CDATA[<unknown>]]></string>
+
+    <string name="song_length">00 : 00</string>
+    <string name="more_options">more_options</string>
+    <string name="song_name">Alan Walker - Fading away song alan</string>
+    <string name="search_view">SearchView</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="current_playing_song_f">Current playing song fragment</string>
+    <string name="fragmentplaybutton">fragmentPlayButton</string>
+    <string name="fragmentnextbutton">fragmentNextButton</string>
+</resources>
