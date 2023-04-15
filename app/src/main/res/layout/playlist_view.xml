@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_marginBottom="2dp"
+    android:padding="2dp"
+    app:shapeAppearanceOverlay="@style/curved_shapeP"
+    app:strokeColor="@color/mainPrimaryColor"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/albumImageP"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/curved_shapeP"
+            app:srcCompat="@drawable/player_icon" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/albumImageP">
+
+            <TextView
+                android:id="@+id/playlistName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".3"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:singleLine="true"
+                android:text="TextVi efdgdew" />
+
+            <ImageView
+                android:id="@+id/playlistDelete"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                app:srcCompat="@drawable/ic_baseline_delete_outline_24" />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

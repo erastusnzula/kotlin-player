@@ -19,15 +19,18 @@
         <item name="android:windowBackground">@drawable/slash_screen_icon</item>
     </style>
     <style name="curved_shape">
+        <item name="cornerSize">30%</item>
+    </style>
+    <style name="curved_shape_Im">
         <item name="cornerSize">15%</item>
-
+    </style>
+    <style name="curved_shapeP">
+        <item name="cornerSize">8%</item>
     </style>
     <style name="curved_shapeA">
         <item name="cornerSize">5%</item>
     </style>
     <style name="fragmentShape">
-        <item name="strokeColor">@color/mainPrimaryColor</item>
-        <item name="strokeWidth">2dp</item>
-        <item name="cornerSize">5%</item>
+        <item name="cornerSize">20%</item>
     </style>
 </resources>

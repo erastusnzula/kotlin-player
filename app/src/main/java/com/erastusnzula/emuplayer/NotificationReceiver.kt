@@ -6,7 +6,6 @@ import android.content.Intent
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import kotlin.system.exitProcess
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -16,11 +15,7 @@ class NotificationReceiver : BroadcastReceiver() {
             ApplicationClass.NEXT -> playNextOrPrevious(increment = true, context = context!!)
             ApplicationClass.REPEAT -> repeatMode(context)
             ApplicationClass.EXIT -> {
-                PlayerActivity.musicService!!.stopForeground(true)
-                PlayerActivity.musicService!!.audioManager.abandonAudioFocus(PlayerActivity.musicService)
-                PlayerActivity.musicService!!.mediaPlayer!!.release()
-                PlayerActivity.musicService = null
-                exitProcess(0)
+                exitProtocol()
             }
 
         }
@@ -125,6 +120,12 @@ class NotificationReceiver : BroadcastReceiver() {
             PlayerActivity.musicListA[PlayerActivity.songPosition].title
         PlayerActivity.binding.albumNameA.text =
             PlayerActivity.musicListA[PlayerActivity.songPosition].album
+        PlayerActivity.favouriteIndex = checkIfFavourite(PlayerActivity.musicListA[PlayerActivity.songPosition].id)
+        if (PlayerActivity.isFavourite){
+            PlayerActivity.binding.favouriteA.setImageResource(R.drawable.ic_baseline_favorite_24)
+        }else{
+            PlayerActivity.binding.favouriteA.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+        }
 
 
     }

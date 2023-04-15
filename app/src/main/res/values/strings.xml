@@ -31,4 +31,17 @@
     <string name="current_playing_song_f">Current playing song fragment</string>
     <string name="fragmentplaybutton">fragmentPlayButton</string>
     <string name="fragmentnextbutton">fragmentNextButton</string>
+    <string name="opening"><![CDATA[<]]></string>
+    <string name="closing"><![CDATA[> ]]></string>
+    <string name="minutes_10">10 minutes</string>
+    <string name="minutes_20">20 minutes</string>
+    <string name="minutes_30">30 minutes</string>
+    <string name="playlist_name">Playlist Name</string>
+    <string name="your_name">Your Name</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="about">About</string>
+    <string name="display">Display</string>
+    <string name="download">Download</string>
+    <string name="settings_nav">Settings</string>
 </resources>

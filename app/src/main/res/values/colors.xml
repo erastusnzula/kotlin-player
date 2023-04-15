@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="mainPrimaryColor">#1976D2</color>
     <color name="activePageColor">#30FB02</color>
+    <color name="red">#F50707</color>
 </resources>

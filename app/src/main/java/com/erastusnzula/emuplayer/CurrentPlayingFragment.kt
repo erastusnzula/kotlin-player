@@ -14,7 +14,7 @@ import com.erastusnzula.emuplayer.databinding.FragmentCurrentPlayingBinding
 
 
 class CurrentPlayingFragment : Fragment() {
-    companion object{
+    companion object {
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: FragmentCurrentPlayingBinding
     }
@@ -24,23 +24,28 @@ class CurrentPlayingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view= inflater.inflate(R.layout.fragment_current_playing, container, false)
+        val view = inflater.inflate(R.layout.fragment_current_playing, container, false)
         binding = FragmentCurrentPlayingBinding.bind(view)
         binding.root.visibility = View.GONE
         binding.fragmentSongName.isSelected = true
         binding.fragmentPlay.setOnClickListener {
-            if (PlayerActivity.isActive)pause() else play()
+            if (PlayerActivity.isActive) pause() else play()
         }
         binding.fragmentNext.setOnClickListener {
-            setSongPosition(increment=true)
+            setSongPosition(increment = true)
             PlayerActivity.musicService!!.createMediaPlayer()
             Glide.with(this)
                 .load(PlayerActivity.musicListA[PlayerActivity.songPosition].artUri)
-                .apply(RequestOptions().placeholder(R.drawable.ic_baseline_music_splash).centerCrop())
+                .apply(
+                    RequestOptions().placeholder(R.drawable.ic_baseline_music_splash).centerCrop()
+                )
                 .into(PlayerActivity.binding.currentAlbumImage)
-            PlayerActivity.binding.currentSongA.text = PlayerActivity.musicListA[PlayerActivity.songPosition].title
-            PlayerActivity.binding.albumNameA.text = PlayerActivity.musicListA[PlayerActivity.songPosition].album
-            binding.fragmentSongName.text=PlayerActivity.musicListA[PlayerActivity.songPosition].title
+            PlayerActivity.binding.currentSongA.text =
+                PlayerActivity.musicListA[PlayerActivity.songPosition].title
+            PlayerActivity.binding.albumNameA.text =
+                PlayerActivity.musicListA[PlayerActivity.songPosition].album
+            binding.fragmentSongName.text =
+                PlayerActivity.musicListA[PlayerActivity.songPosition].title
 
         }
         binding.root.setOnClickListener {
@@ -54,42 +59,47 @@ class CurrentPlayingFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (PlayerActivity.musicService != null){
+        if (PlayerActivity.musicService != null) {
             binding.root.visibility = View.VISIBLE
             Glide.with(this)
                 .load(PlayerActivity.musicListA[PlayerActivity.songPosition].artUri)
-                .apply(RequestOptions().placeholder(R.drawable.ic_baseline_music_splash).centerCrop())
+                .apply(
+                    RequestOptions().placeholder(R.drawable.ic_baseline_music_splash).centerCrop()
+                )
                 .into(binding.fragmentAlbumImage)
-            binding.fragmentSongName.text = PlayerActivity.musicListA[PlayerActivity.songPosition].title
-            if (PlayerActivity.isActive){
+            binding.fragmentSongName.text =
+                PlayerActivity.musicListA[PlayerActivity.songPosition].title
+            if (PlayerActivity.isActive) {
                 binding.fragmentPlay.setImageResource(R.drawable.ic_baseline_pause_24)
-            }else{
+            } else {
                 binding.fragmentPlay.setImageResource(R.drawable.ic_baseline_play_circle_filled_24)
             }
         }
     }
 
-    private fun play(){
+    private fun play() {
         binding.fragmentPlay.setImageResource(R.drawable.ic_baseline_pause_24)
         PlayerActivity.isActive = true
         PlayerActivity.musicService!!.mediaPlayer!!.start()
-        if (PlayerActivity.repeat){
-            PlayerActivity.musicService!!.displayNotification(R.drawable.ic_baseline_pause_24, R.drawable.ic_baseline_repeat_one_24)
-        }else{
-            PlayerActivity.musicService!!.displayNotification(R.drawable.ic_baseline_pause_24, R.drawable.ic_baseline_repeat_24)
+        if (PlayerActivity.repeat) {
+            PlayerActivity.musicService!!.displayNotification(
+                R.drawable.ic_baseline_pause_24,
+                R.drawable.ic_baseline_repeat_one_24
+            )
+        } else {
+            PlayerActivity.musicService!!.displayNotification(
+                R.drawable.ic_baseline_pause_24,
+                R.drawable.ic_baseline_repeat_24
+            )
         }
         PlayerActivity.binding.playA.setImageResource(R.drawable.ic_baseline_pause_24)
     }
 
-    private fun pause(){
+    private fun pause() {
         binding.fragmentPlay.setImageResource(R.drawable.ic_baseline_play_circle_filled_24)
         PlayerActivity.isActive = false
         PlayerActivity.musicService!!.mediaPlayer!!.pause()
-        if (PlayerActivity.repeat){
-            PlayerActivity.musicService!!.displayNotification(R.drawable.ic_baseline_play_circle_filled_24, R.drawable.ic_baseline_repeat_one_24)
-        }else{
-            PlayerActivity.musicService!!.displayNotification(R.drawable.ic_baseline_play_circle_filled_24, R.drawable.ic_baseline_repeat_24)
-        }
+        repeatPauseControl()
         PlayerActivity.binding.playA.setImageResource(R.drawable.ic_baseline_play_circle_filled_24)
 
     }

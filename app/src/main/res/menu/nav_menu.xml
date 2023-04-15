@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/navAbout" android:title="@string/about"
+        android:icon="@drawable/ic_baseline_read_more_24"
+        android:iconTint="@color/mainPrimaryColor"/>
+    <item android:id="@+id/navDisplay" android:title="@string/display"
+        android:icon="@drawable/ic_baseline_call_to_action_24"/>
+    <item android:id="@+id/navDownload" android:title="@string/download"
+        android:icon="@drawable/ic_baseline_arrow_downward_24"/>
+    <item android:id="@+id/navSettings" android:title="@string/settings_nav"
+        android:icon="@drawable/ic_baseline_settings_24"/>
+
+</menu>

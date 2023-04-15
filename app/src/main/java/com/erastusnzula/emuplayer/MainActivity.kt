@@ -8,26 +8,31 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.erastusnzula.emuplayer.databinding.ActivityMainBinding
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import java.io.File
-import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var musicAdapter: MusicAdapter
     private lateinit var allSongsButton: ImageView
     private lateinit var favouriteButton: ImageView
     private lateinit var playlistButton: ImageView
-    private lateinit var settingsButton: ImageView
-    private lateinit var shuffleButton: ImageView
+//    private lateinit var settingsButton: ImageView
+//    private lateinit var shuffleButton: ImageView
     private val audioRequestCode = 1
+
 
     companion object {
         lateinit var musicList: ArrayList<MusicFile>
@@ -39,28 +44,70 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_EMUPlayer)
-        title = "Music Player"
+        title = "Songs"
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        toggle = ActionBarDrawerToggle(this, binding.root,R.string.open,R.string.close)
+        binding.root.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
             if (checkForPermissions()){
                 playerInitialization()
+                FavouriteActivity.favouriteList = ArrayList()
+                val editor = getSharedPreferences("FAVOURITES", MODE_PRIVATE)
+                val jsonString = editor.getString("FavouriteSongs", null)
+                val tokenType = object : TypeToken<ArrayList<MusicFile>>(){}.type
+                if (jsonString != null){
+                    val data: ArrayList<MusicFile> = GsonBuilder().create().fromJson(jsonString, tokenType)
+                    FavouriteActivity.favouriteList.addAll(data)
+                }
             }
         }else{
             if (checkForPermissionsLower()) {
                 playerInitialization()
+                FavouriteActivity.favouriteList = ArrayList()
+                val editor = getSharedPreferences("FAVOURITES", MODE_PRIVATE)
+                val jsonString = editor.getString("FavouriteSongs", null)
+                val tokenType = object : TypeToken<ArrayList<MusicFile>>(){}.type
+                if (jsonString != null){
+                    val data: ArrayList<MusicFile> = GsonBuilder().create().fromJson(jsonString, tokenType)
+                    FavouriteActivity.favouriteList.addAll(data)
+                }
+
+                PlaylistActivity.musicPlaylist = MusicPlaylist()
+                val jsonStringPl = editor.getString("PlaylistSongs", null)
+                if (jsonStringPl != null){
+                    val dataPl: MusicPlaylist = GsonBuilder().create().fromJson(jsonStringPl, MusicPlaylist::class.java)
+                    PlaylistActivity.musicPlaylist = dataPl
+                }
             }
         }
 
+        binding.navView.setNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.navAbout->startActivity(Intent(this, AboutActivity::class.java))
+                R.id.navDisplay -> startActivity(Intent(this, DisplayActivity::class.java))
+                R.id.navDownload->startActivity(Intent(this, DownloadActivity::class.java))
+                R.id.navSettings->startActivity(Intent(this, SettingsActivity::class.java))
+            }
+            true
+        }
         bindButtons()
         allSongsButtonClick()
         playlistButtonClick()
         favouriteButtonClick()
-        settingsButtonClick()
+//        settingsButtonClick()
 //        shuffleButtonClick()
 
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item))
+            return true
+        return super.onOptionsItemSelected(item)
+    }
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -83,11 +130,18 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         if (!PlayerActivity.isActive && PlayerActivity.musicService != null) {
-            PlayerActivity.musicService!!.stopForeground(true)
-            PlayerActivity.musicService!!.mediaPlayer!!.release()
-            PlayerActivity.musicService = null
-            exitProcess(0)
+            exitProtocol()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val editor = getSharedPreferences("FAVOURITES", MODE_PRIVATE).edit()
+        val jsonString = GsonBuilder().create().toJson(FavouriteActivity.favouriteList)
+        editor.putString("FavouriteSongs", jsonString)
+        val jsonStringPl = GsonBuilder().create().toJson(PlaylistActivity.musicPlaylist)
+        editor.putString("PlaylistSongs", jsonStringPl)
+        editor.apply()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -119,25 +173,25 @@ class MainActivity : AppCompatActivity() {
         allSongsButton = binding.allSongsButton
         favouriteButton = binding.favouritesButton
         playlistButton = binding.playlistButton
-        settingsButton = binding.settingsButton
-        shuffleButton = binding.shuffleButton
-        allSongsButton.setColorFilter(
-            ActivityCompat.getColor(
-                this@MainActivity,
-                R.color.activePageColor
-            )
-        )
+//        settingsButton = binding.settingsButton
+//        shuffleButton = binding.shuffleButton
+//        allSongsButton.setColorFilter(
+//            ActivityCompat.getColor(
+//                this@MainActivity,
+//                R.color.activePageColor
+//            )
+//        )
 
     }
 
     private fun allSongsButtonClick() {
         allSongsButton.setOnClickListener {
-            binding.allSongsButton.setColorFilter(
-                ActivityCompat.getColor(
-                    this@MainActivity,
-                    R.color.activePageColor
-                )
-            )
+//            binding.allSongsButton.setColorFilter(
+//                ActivityCompat.getColor(
+//                    this@MainActivity,
+//                    R.color.activePageColor
+//                )
+//            )
             playlistButton.setColorFilter(
                 ActivityCompat.getColor(
                     this@MainActivity,
@@ -154,13 +208,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun settingsButtonClick() {
-        settingsButton.setOnClickListener {
-            val intent = Intent(this@MainActivity, SettingsActivity::class.java)
-            startActivity(intent)
-        }
-
-    }
+//    private fun settingsButtonClick() {
+//        settingsButton.setOnClickListener {
+//            val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+//            startActivity(intent)
+//        }
+//
+//    }
 
     private fun favouriteButtonClick() {
         favouriteButton.setOnClickListener {
@@ -170,15 +224,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun shuffleButtonClick() {
-        shuffleButton.setOnClickListener {
-            val intent = Intent(this@MainActivity, PlayerActivity::class.java)
-            intent.putExtra("index", 0)
-            intent.putExtra("class", "MainActivity")
-            startActivity(intent)
-        }
-
-    }
+//    private fun shuffleButtonClick() {
+//        shuffleButton.setOnClickListener {
+//            val intent = Intent(this@MainActivity, PlayerActivity::class.java)
+//            intent.putExtra("index", 0)
+//            intent.putExtra("class", "MainActivity")
+//            startActivity(intent)
+//        }
+//
+//    }
 
     private fun playerInitialization() {
         isInSearch = false

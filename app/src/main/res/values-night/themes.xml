@@ -19,8 +19,6 @@
 
     </style>
     <style name="fragmentShape">
-        <item name="strokeColor">@color/purple_500</item>
-        <item name="strokeWidth">2dp</item>
-        <item name="cornerSize">5%</item>
+        <item name="cornerSize">20%</item>
     </style>
 </resources>

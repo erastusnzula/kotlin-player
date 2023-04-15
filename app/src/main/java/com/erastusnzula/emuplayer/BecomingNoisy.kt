@@ -11,17 +11,7 @@ class BecomingNoisy: BroadcastReceiver() {
             PlayerActivity.isActive = false
             PlayerActivity.musicService!!.mediaPlayer!!.pause()
             CurrentPlayingFragment.binding.fragmentPlay.setImageResource(R.drawable.ic_baseline_play_circle_filled_24)
-            if (PlayerActivity.repeat) {
-                PlayerActivity.musicService!!.displayNotification(
-                    R.drawable.ic_baseline_play_circle_filled_24,
-                    R.drawable.ic_baseline_repeat_one_24
-                )
-            } else {
-                PlayerActivity.musicService!!.displayNotification(
-                    R.drawable.ic_baseline_play_circle_filled_24,
-                    R.drawable.ic_baseline_repeat_24
-                )
-            }
+            repeatPauseControl()
             PlayerActivity.binding.playA.setImageResource(R.drawable.ic_baseline_play_circle_filled_24)
         }
     }
